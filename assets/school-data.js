@@ -29,7 +29,7 @@ window.OLQW = {
   // Key dates: [start, end or null, name, type]
   // type: "off" (No school), "exam" (Exams), "event" (Event), or null (no label)
   events: [
-    ["2026-10-24", null, "Awards Night", "event"],
+    ["2026-10-29", null, "Awards Night", "event"],
     ["2026-11-04", null, "Post-secondary fair", "event"],
     ["2026-11-05", null, "Grade 8 parent open house", "event"],
     ["2026-11-20", null, "PA day", "off"],

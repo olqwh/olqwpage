@@ -66,6 +66,29 @@
   const isPast = (e) => e.end < today;
   const isNow = (e) => e.start <= today && e.end >= today;
 
+  // Week rotation (same rules as today.js): weeks with no school days are skipped.
+  const summerFrom = data.summerFrom ? parse(data.summerFrom) : null;
+  const anchor = parse(data.weekAnchor.monday);
+  const anchorWeek = data.weekAnchor.week;
+  const isWeekend = (d) => d.getDay() === 0 || d.getDay() === 6;
+  const isSchoolDay = (d) =>
+    !isWeekend(d) && !(summerFrom && d >= summerFrom) && !onDay(d).some((e) => e.type === "off");
+  const mondayOf = (d) => addDays(d, -((d.getDay() + 6) % 7));
+  const weekCounts = (mon) => [0, 1, 2, 3, 4].some((i) => isSchoolDay(addDays(mon, i)));
+
+  // Week 1 or 2 for the week containing `d`, or null when the whole week is off.
+  const weekOf = (d) => {
+    const mon = mondayOf(d);
+    if (!weekCounts(mon)) return null;
+    let n = 0;
+    if (mon >= anchor) {
+      for (let w = anchor; w < mon; w = addDays(w, 7)) if (weekCounts(w)) n++;
+    } else {
+      for (let w = mon; w < anchor; w = addDays(w, 7)) if (weekCounts(w)) n++;
+    }
+    return n % 2 === 0 ? anchorWeek : 3 - anchorWeek;
+  };
+
   const rangeText = (e) =>
     same(e.start, e.end) ? fmtShort.format(e.start) : `${fmtShort.format(e.start)} to ${fmtShort.format(e.end)}`;
 
@@ -187,9 +210,10 @@
   const renderPanel = () => {
     const d = state.selected;
     const list = onDay(d);
-    const weekend = d.getDay() === 0 || d.getDay() === 6;
+    const weekend = isWeekend(d);
+    const week = isSchoolDay(d) && weekOf(d);
     panel.innerHTML = `
-      <p class="day-rel">${esc(relDate(d))}</p>
+      <p class="day-rel">${esc(relDate(d))}${week ? ` · Week ${week}` : ""}</p>
       <h3 class="day-title">${fmtLong.format(d)}</h3>
       ${
         list.length
@@ -215,8 +239,18 @@
     const days = monthEnd(m).getDate();
     let html = "";
     for (let i = 0; i < Math.ceil((lead + days) / 7) * 7; i++) {
-      if (i % 7 === 0) html += "<tr>";
       const n = i - lead + 1;
+      if (i % 7 === 0) {
+        // Week rail: the school week (Mon to Fri) sits in this Sunday-first row.
+        const mon = new Date(m.getFullYear(), m.getMonth(), n + 1);
+        const week = weekOf(mon);
+        const current = same(mondayOf(today), mon) ? " is-current" : "";
+        html += `<tr><th scope="row" class="wk${week ? ` wk--${week}${current}` : ""}">${
+          week
+            ? `<span class="wk-pill" aria-hidden="true">${week}</span><span class="visually-hidden">Week ${week}</span>`
+            : `<span class="visually-hidden">No school this week</span>`
+        }</th>`;
+      }
       if (n < 1 || n > days) {
         html += `<td class="day-blank"></td>`;
       } else {

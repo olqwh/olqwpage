@@ -770,6 +770,11 @@ a:hover {
   .option-note {
     text-align: right;
   }
+
+  /* Home list: size the note column to its text so notes stay on one line */
+  .options:not(.options--compact) .option {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
 }
 
 /* Resources */
@@ -1305,6 +1310,70 @@ a:hover {
     -webkit-line-clamp: 2;
     line-clamp: 2;
     overflow-wrap: anywhere;
+  }
+}
+
+/* Week rail: a slim column of Week 1 / Week 2 markers beside each row */
+
+.month-grid .wk {
+  width: 1.5rem;
+  padding: 0;
+  text-align: center;
+}
+
+.month-grid tbody .wk {
+  position: relative;
+  vertical-align: middle;
+}
+
+.month-grid tbody .wk::before {
+  content: "";
+  position: absolute;
+  inset: 4px auto 4px 50%;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.month-grid tbody .wk--2::before {
+  background: var(--accent-tint);
+}
+
+.wk-pill {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  box-shadow: 0 0 0 3px var(--paper);
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.wk--2 .wk-pill {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.wk.is-current .wk-pill {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+@media (min-width: 48rem) {
+  .month-grid .wk {
+    width: 2rem;
+  }
+
+  .month-grid thead .wk {
+    padding-left: 0;
+    text-align: center;
   }
 }
 
