@@ -370,7 +370,7 @@ a:hover {
   }
 }
 
-/* Home: today sidebar (computers only) */
+/* Home: today panel (sidebar on computers, above the links on phones) */
 
 .home-grid {
   display: grid;
@@ -378,7 +378,13 @@ a:hover {
   align-items: start;
 }
 
-.today {
+.today:not([hidden]) {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* The calendar link in "Where to?" covers this on phones. */
+.today-up {
   display: none;
 }
 
@@ -387,9 +393,18 @@ a:hover {
     grid-template-columns: minmax(0, 1fr) 22rem;
   }
 
-  .today:not([hidden]) {
-    display: grid;
-    gap: var(--space-lg);
+  .home-main {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .today {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .today-up {
+    display: block;
   }
 }
 
@@ -469,13 +484,50 @@ a:hover {
 .sched-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-sm);
-  padding: var(--space-2xs) 0.625rem var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-2xs) 0.625rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.sched-head::-webkit-details-marker {
+  display: none;
 }
 
 .sched-head h3 {
+  flex: 1;
   font-size: var(--text-base);
+}
+
+.today-sched:not([open]) {
+  padding-bottom: var(--space-sm);
+}
+
+.today-sched[open] .sched-head {
+  margin-bottom: var(--space-2xs);
+}
+
+.sched-toggle {
+  padding: 0.0625rem 0.625rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.sched-head:hover .sched-toggle {
+  border-color: var(--sky);
+  background: var(--surface);
+}
+
+.today-sched .when-open,
+.today-sched[open] .when-closed {
+  display: none;
+}
+
+.today-sched[open] .when-open {
+  display: inline;
 }
 
 .week-pill {

@@ -1,5 +1,6 @@
-// Home page sidebar: what's happening now, today's bell schedule, and what's
-// coming up. Reads school-data.js and runs on Toronto time.
+// Home page "today" panel: what's happening now, today's bell schedule, and
+// what's coming up. A sidebar on computers, above the links on phones. Reads
+// school-data.js and runs on Toronto time.
 (() => {
   "use strict";
 
@@ -143,6 +144,8 @@
     return `In ${Math.round(s / 30.44)} months`;
   };
 
+  const wide = matchMedia("(min-width: 64rem)");
+
   const tagHtml = (e) => (e.label ? `<span class="cal-tag cal-tag--${e.type}">${esc(e.label)}</span>` : "");
 
   // Render
@@ -251,14 +254,18 @@
           return `<li class="${cls.join(" ")}"${i === current && liveToday ? ' aria-current="time"' : ""}><span class="bell-time">${shortSpan(b.s, b.e)}</span><span class="bell-name">${esc(nameFor(b, sw))}</span>${lunches}</li>`;
         })
         .join("");
+      // Keep the viewer's open/closed choice across re-renders. Phones start closed.
+      const prev = box.querySelector(".today-sched");
+      const open = prev ? prev.open : wide.matches;
       sched = `
-        <div class="today-sched">
-          <div class="sched-head">
+        <details class="today-sched"${open ? " open" : ""}>
+          <summary class="sched-head">
             <h3>${esc(heading)}</h3>
             <span class="week-pill">Week ${sw}</span>
-          </div>
+            <span class="sched-toggle" aria-hidden="true"><span class="when-closed">Show</span><span class="when-open">Hide</span></span>
+          </summary>
           <ol class="bells">${rows}</ol>
-        </div>`;
+        </details>`;
     }
 
     // Coming up
