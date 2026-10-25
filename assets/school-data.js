@@ -37,6 +37,7 @@ window.OLQW = {
     ["2027-01-26", "2027-02-01", "Semester 1 exams", "exam"],
     ["2027-02-02", null, "PA day", "off"],
     ["2027-02-03", null, "Exam review", "exam"],
+    ["2027-02-04", null, "Semester 2 begins", null],
     ["2027-02-15", null, "Family Day", "off"],
     ["2027-03-15", "2027-03-19", "March break", "off"],
     ["2027-03-26", null, "Good Friday", "off"],

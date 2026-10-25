@@ -62,7 +62,11 @@
   const maxDate = monthEnd(last > today ? last : today);
   const clamp = (d) => (d < minDate ? minDate : d > maxDate ? maxDate : d);
 
-  const onDay = (d) => events.filter((e) => d >= e.start && d <= e.end);
+  // Multi-day events (breaks, exams) skip weekends; single-day events show on their date.
+  const onDay = (d) =>
+    events.filter(
+      (e) => d >= e.start && d <= e.end && (same(e.start, e.end) || (d.getDay() !== 0 && d.getDay() !== 6))
+    );
   const isPast = (e) => e.end < today;
   const isNow = (e) => e.start <= today && e.end >= today;
 
@@ -244,7 +248,7 @@
         // Week rail: the school week (Mon to Fri) sits in this Sunday-first row.
         const mon = new Date(m.getFullYear(), m.getMonth(), n + 1);
         const week = weekOf(mon);
-        const current = same(mondayOf(today), mon) ? " is-current" : "";
+        const current = same(addDays(today, -today.getDay()), addDays(mon, -1)) ? " is-current" : "";
         html += `<tr><th scope="row" class="wk${week ? ` wk--${week}${current}` : ""}">${
           week
             ? `<span class="wk-pill" aria-hidden="true">${week}</span><span class="visually-hidden">Week ${week}</span>`
@@ -267,7 +271,7 @@
         const sel = same(d, state.selected);
 
         const labels = list
-          .filter((e) => same(d, e.start) || d.getDay() === 0 || n === 1)
+          .filter((e) => same(d, e.start) || d.getDay() === 1 || n === 1)
           .map((e) => `<span class="day-label">${esc(e.name)}</span>`)
           .join("");
         const aria = [fmtLong.format(d), isToday ? "today" : "", ...list.map((e) => (e.label ? `${e.name}, ${e.label}` : e.name))]
@@ -344,6 +348,66 @@
     else if (nav === "next") goMonth(addMonths(state.month, 1));
     else if (nav === "today") select(today, false);
   });
+
+  // Calendar file (.ics), unlocked by the "unofficial" checkbox
+
+  const icsForm = document.getElementById("ics-form");
+  const icsAck = document.getElementById("ics-ack");
+  const icsBtn = document.getElementById("ics-download");
+
+  const icsDate = (d) => iso(d).replace(/-/g, "");
+  const icsText = (s) => s.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
+  // Lines over 75 characters continue on the next line after a space.
+  const icsFold = (line) => line.match(/.{1,73}/g).join("\r\n ");
+
+  const buildIcs = () => {
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//olqw.ca//School year calendar//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "X-WR-CALNAME:OLQW dates (unofficial)",
+      "X-WR-TIMEZONE:America/Toronto",
+    ];
+    for (const e of events) {
+      const slug = e.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      lines.push(
+        "BEGIN:VEVENT",
+        `UID:${icsDate(e.start)}-${slug}@olqw.ca`,
+        `DTSTAMP:${stamp}`,
+        `DTSTART;VALUE=DATE:${icsDate(e.start)}`,
+        `DTEND;VALUE=DATE:${icsDate(addDays(e.end, 1))}`,
+        `SUMMARY:${icsText(e.type === "off" ? `${e.name} (No school)` : e.name)}`,
+        `DESCRIPTION:${icsText("Unofficial, from olqw.ca. Check important dates with the school.")}`,
+        "TRANSP:TRANSPARENT",
+        "END:VEVENT"
+      );
+    }
+    lines.push("END:VCALENDAR");
+    return lines.map(icsFold).join("\r\n") + "\r\n";
+  };
+
+  icsAck.addEventListener("change", () => {
+    icsBtn.disabled = !icsAck.checked;
+  });
+
+  icsForm.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    if (!icsAck.checked) return;
+    const url = URL.createObjectURL(new Blob([buildIcs()], { type: "text/calendar;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "olqw-dates-unofficial.ics";
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  // The "Today" button's calendar icon shows today's date.
+  live.querySelector(".today-num").textContent = today.getDate();
 
   // Go
 

@@ -59,9 +59,15 @@
             <div class="month-head">
               <h2 id="cal-month-title" aria-live="polite">Month</h2>
               <div class="month-nav">
-                <button type="button" class="pill-btn" data-nav="prev">Previous</button>
-                <button type="button" class="pill-btn" data-nav="today">Today</button>
-                <button type="button" class="pill-btn" data-nav="next">Next</button>
+                <button type="button" class="pill-btn pill-btn--icon" data-nav="today" aria-label="Today" title="Today">
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M3.5 9.5h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><text class="today-num" x="12" y="17.6" text-anchor="middle" font-size="7.5" font-weight="800" fill="currentColor"></text></svg>
+                </button>
+                <button type="button" class="pill-btn pill-btn--icon" data-nav="prev" aria-label="Previous month" title="Previous month">
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" class="pill-btn pill-btn--icon" data-nav="next" aria-label="Next month" title="Next month">
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
             </div>
             <table class="month-grid" role="grid" aria-labelledby="cal-month-title">
@@ -87,6 +93,24 @@
             </ul>
           </div>
           <div class="day-panel" id="cal-day" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="ics-title">
+        <div class="wrap">
+          <form class="ics" id="ics-form">
+            <div class="ics-copy">
+              <h2 id="ics-title">Add these dates to your calendar</h2>
+              <p>An .ics file for Google Calendar, Apple Calendar, or Outlook. It's a one-time copy, so it won't update if dates change.</p>
+            </div>
+            <div class="ics-act">
+              <label class="ics-ack">
+                <input type="checkbox" id="ics-ack">
+                <span>I understand this calendar is <strong>unofficial</strong>, isn't from OLQW or the YCDSB, and may have mistakes. I'll check important dates with the school.</span>
+              </label>
+              <button type="submit" class="button" id="ics-download" disabled>Download .ics</button>
+            </div>
+          </form>
         </div>
       </section>
 

@@ -1163,6 +1163,21 @@ a:hover {
   border-color: var(--ink);
 }
 
+.pill-btn--icon {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+
+.pill-btn--icon svg {
+  display: block;
+}
+
+/* Gap between "Today" and the previous / next pair */
+.pill-btn--icon[data-nav="today"] {
+  margin-right: var(--space-xs);
+}
+
 .pill-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -1493,6 +1508,85 @@ a:hover {
 
 .day-empty {
   color: var(--ink-2);
+}
+
+/* Calendar file download */
+
+.ics {
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.ics-copy {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.ics-copy h2 {
+  font-size: var(--text-xl);
+}
+
+.ics-copy p {
+  color: var(--ink-2);
+  max-width: var(--measure);
+}
+
+.ics-act {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+}
+
+.ics-ack {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  background: var(--warning-tint);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.ics-ack input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 1px 0 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.ics-ack strong {
+  color: var(--warning);
+}
+
+.ics .button {
+  margin-top: 0;
+  border: 0;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ics .button:disabled {
+  background: var(--line);
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+@media (min-width: 64rem) {
+  .ics {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-lg);
+  }
 }
 
 /* Upcoming and past lists */
