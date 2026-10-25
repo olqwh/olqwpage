@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>School year calendar · olqw.ca</title>
+  <meta name="description" content="School year dates for Our Lady Queen of the World Catholic Academy. Unofficial; verify with the school.">
+  <meta name="theme-color" content="oklch(0.53 0.125 214)">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/school-data.js" defer></script>
+  <script src="assets/calendar.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <aside class="notice" aria-label="Unofficial website notice">
+    <div class="wrap">
+      <p><strong>Unofficial student website.</strong> Not affiliated with, endorsed by, or operated by Our Lady Queen of the World Catholic Academy or the York Catholic District School Board. <a href="#disclaimer">Read the full notice</a></p>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html">olqw<span>.ca</span></a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="clubs.html">Clubs</a></li>
+          <li><a href="calendar.html" aria-current="page">Calendar</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="band">
+      <div class="wrap">
+        <p class="band-kicker">olqw.ca</p>
+        <h1>School year calendar</h1>
+        <p class="lede">Key dates for the 2026-27 school year. Always check important dates with the school's official channels.</p>
+      </div>
+    </div>
+
+    <div class="cal-live" id="cal-live" hidden>
+      <section class="section" aria-labelledby="next-title">
+        <div class="wrap">
+          <h2 class="visually-hidden" id="next-title">At a glance</h2>
+          <div class="next" id="cal-next"></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="cal-month-title">
+        <div class="wrap month-layout">
+          <div class="month">
+            <div class="month-head">
+              <h2 id="cal-month-title" aria-live="polite">Month</h2>
+              <div class="month-nav">
+                <button type="button" class="pill-btn" data-nav="prev">Previous</button>
+                <button type="button" class="pill-btn" data-nav="today">Today</button>
+                <button type="button" class="pill-btn" data-nav="next">Next</button>
+              </div>
+            </div>
+            <table class="month-grid" role="grid" aria-labelledby="cal-month-title">
+              <thead>
+                <tr>
+                  <th scope="col" abbr="Sunday">Sun</th>
+                  <th scope="col" abbr="Monday">Mon</th>
+                  <th scope="col" abbr="Tuesday">Tue</th>
+                  <th scope="col" abbr="Wednesday">Wed</th>
+                  <th scope="col" abbr="Thursday">Thu</th>
+                  <th scope="col" abbr="Friday">Fri</th>
+                  <th scope="col" abbr="Saturday">Sat</th>
+                </tr>
+              </thead>
+              <tbody id="cal-grid"></tbody>
+            </table>
+            <ul class="legend" aria-label="Legend">
+              <li><span class="swatch swatch--off"></span>No school</li>
+              <li><span class="swatch swatch--exam"></span>Exams</li>
+              <li><span class="swatch swatch--event"></span>Event</li>
+              <li><span class="swatch swatch--today"></span>Today</li>
+            </ul>
+          </div>
+          <div class="day-panel" id="cal-day" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="upcoming-title">
+        <div class="wrap">
+          <h2 class="list-title" id="upcoming-title">Coming up</h2>
+          <div class="cal" id="cal-upcoming"></div>
+          <details class="cal-past" id="cal-past-wrap">
+            <summary><span>Past events <span id="cal-past-count"></span></span><span class="cal-past-hint" aria-hidden="true"><span class="when-closed">Show</span><span class="when-open">Hide</span></span></summary>
+            <div class="cal" id="cal-past"></div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <section class="section" id="cal-nojs">
+      <div class="wrap">
+        <div class="empty">
+          <h2>The calendar needs JavaScript</h2>
+          <p>Turn on JavaScript in your browser to see the school year calendar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="disclaimer" id="disclaimer" aria-labelledby="disclaimer-title">
+      <div class="wrap">
+        <div class="disclaimer-panel">
+          <h2 id="disclaimer-title">Unofficial Student Website</h2>
+          <p>olqw.ca is an independent, student-created website and is not affiliated with, endorsed by, or operated by Our Lady Queen of the World Catholic Academy or the York Catholic District School Board.</p>
+          <p>This website is intended to provide student-created resources and information. Official announcements, policies, schedules, and other school information should be verified through the school's official channels.</p>
+          <p>School names and other third-party materials remain the property of their respective owners. Please contact the website maintainer regarding corrections or concerns.</p>
+          <p class="disclaimer-contact">Maintainer contact: <a href="mailto:icier.hornets.6u@icloud.com">icier.hornets.6u@icloud.com</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <p class="footer-motto">Choose love always.</p>
+        <p class="footer-meta">Made by students. Not affiliated with OLQW or the YCDSB.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://olqwh.ycdsb.ca" target="_blank" rel="noopener">Official school site</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
